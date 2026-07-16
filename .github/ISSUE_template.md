@@ -3,9 +3,6 @@ name: 'Issue template.'
 about: 'Use this template to report a bug or feature you would like to add to this
   repo. '
 title: 'Bug/Feature: Title of the issue'
-labels: 'You can use labels such as “help wanted” and “good first issue” to help potential collaborators, including newbies, find your repo. See https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/encouraging-helpful-contributions-to-your-project-with-labels'
-assignees: ''
-
 ---
 
 # If you are reporting a Bug:

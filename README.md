@@ -85,7 +85,7 @@ Planned future capabilities include:
 
 Contributions, feature requests and bug reports are welcome.
 
-Please see:
+Please see .github/:
 
 * `CONTRIBUTING.md`
 * `ISSUE_template.md`
