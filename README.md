@@ -25,16 +25,16 @@ and environmental-health relationships while maintaining data governance and con
 
 ## Motivation
 
-Many important public health questions require linking health outcomes with environmental exposures such as:
+Many important public health questions require linking health outcomes with environmental exposures.
+The package can be used to investigate questions such as:
 
-* Greenspace accessibility
-* Air pollution
-* Noise exposure
-* Urban infrastructure
-* Socio-economic indicators
-* Household location characteristics
+* How does asthma prevalence vary with proximity to greenspace?
+* Which neighbourhoods have the highest average air pollution exposure?
+* Are environmental exposures distributed equally across socio-economic groups?
+* Can spatial trends be reproduced across multiple organisations without sharing household-level data?
 
-These datasets are often held by different organisations and cannot be combined 
+
+The datasets for such research are often held by different organisations and cannot be combined 
 because of privacy, governance or legal constraints.
 
 **dsGeospatial** provides a federated analytical framework that enables these 
@@ -61,17 +61,6 @@ Current and planned functionality includes:
 
 ---
 
-## Example applications
-
-The package can be used to investigate questions such as:
-
-* How does asthma prevalence vary with proximity to greenspace?
-* Which neighbourhoods have the highest average air pollution exposure?
-* Are environmental exposures distributed equally across socio-economic groups?
-* Can spatial trends be reproduced across multiple organisations without sharing household-level data?
-
----
-
 ## Privacy and disclosure protection
 
 All analyses are performed within the DataSHIELD framework.
@@ -87,7 +76,9 @@ Results returned to the analyst consist only of disclosure-controlled aggregated
 **dsGeospatial** is currently under active development.
 
 Planned future capabilities include:
-
+*
+*
+*
 ---
 
 ## Contributing
