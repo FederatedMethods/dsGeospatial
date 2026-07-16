@@ -1,0 +1,16 @@
+Package: dsGeospatial
+Title: Privacy-Preserving Geospatial Analysis in DataSHIELD
+Version: 0.1.0
+Authors@R: 
+    person("Theertha", "Kariyathan", , "Theertha.Kariyathan@liverpool.ac.uk", role = c("aut", "cre"))
+Description: Provides privacy-preserving methods for the visualisation and
+analysis of linked health and environmental data using the DataSHIELD
+framework. Individual-level and household-level data
+remain within the data-holding organisations, while only disclosure-
+controlled aggregate results are returned to the analyst. The package is
+being developed as part of the GROVE project within the DARE UK programme.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 8.0.0
