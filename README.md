@@ -88,6 +88,8 @@ Contributions, feature requests and bug reports are welcome.
 Please see:
 
 * `CONTRIBUTING.md`
+* `ISSUE_template.md`
+* `DISCLOSUREissue_template.md`
 
 for information on contributing to the project.
 
