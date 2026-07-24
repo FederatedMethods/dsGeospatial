@@ -247,7 +247,7 @@ ds.geoheatmapPlot <- function(x=NULL, y=NULL, type='combine', do.checks=FALSE,
 
   # Plotting
 
-    ggplot2::ggplot(plot.matrix) +
+plotresult <-  ggplot2::ggplot(plot.matrix) +
       ggplot2::geom_sf(ggplot2::aes(fill = mean.study)) +
       ggplot2::scale_fill_gradientn(
         colours = grDevices::colorRampPalette(c(
@@ -264,5 +264,6 @@ ds.geoheatmapPlot <- function(x=NULL, y=NULL, type='combine', do.checks=FALSE,
       ggplot2::facet_wrap(~study) +
       ggplot2::theme_minimal()
 
+return(plotresult)
 }
 

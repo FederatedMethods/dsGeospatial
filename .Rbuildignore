@@ -1,1 +1,4 @@
 ^\.github$
+^dsGeospatial\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
