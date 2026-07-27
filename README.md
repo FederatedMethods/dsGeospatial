@@ -3,8 +3,9 @@
 
 # dsGeospatial
 
-**Privacy-preserving geospatial visualisation and analysis for health
-and environmental data in DataSHIELD**
+<!-- badges: start -->
+
+<!-- badges: end -->
 
 The goal of dsGeospatial is to …
 
@@ -18,62 +19,6 @@ You can install the development version of dsGeospatial from
 pak::pak("FederatedMethods/dsGeospatial")
 ```
 
-## Overview
-
-**dsGeospatial** is a DataSHIELD package that provides federated methods
-for the visualisation and spatial analysis of health and environmental
-data while preserving the privacy of individual-level records.
-
-The package has been developed as part of the **GROVE** project within
-the **DARE UK** programme, with the aim of enabling secure,
-collaborative geospatial analyses across distributed datasets without
-transferring sensitive household-level data.
-
-Unlike conventional geospatial workflows, **dsGeospatial** performs all
-computations within the secure DataSHIELD environment. Only
-non-disclosive summary statistics and visualisations are returned to the
-analyst, allowing organisations to collaboratively investigate spatial
-patterns and environmental-health relationships while maintaining data
-governance and confidentiality.
-
-## Motivation
-
-Many important public health questions require linking health outcomes
-with environmental exposures. The package can be used to investigate
-questions such as:
-
-- How does asthma prevalence vary with proximity to greenspace?
-- Which neighbourhoods have the highest average air pollution exposure?
-- Are environmental exposures distributed equally across socio-economic
-  groups?
-- Can spatial trends be reproduced across multiple organisations without
-  sharing household-level data?
-
-The datasets for such research are often held by different organisations
-and cannot be combined because of privacy, governance or legal
-constraints.
-
-**dsGeospatial** provides a federated analytical framework that enables
-these data to be explored safely without exposing household-level
-information.
-
-## Features
-
-Current and planned functionality includes:
-
-### Geospatial visualisation
-
-- Heatmaps of region-level summaries
-- Choropleth maps - Geographic hotspot identification
-- Spatial correlation analysis
-
-### Federated analytics
-
-- Distributed computation across multiple DataSHIELD servers
-- Automatic aggregation of study-level results
-- Privacy-preserving disclosure controls
-- Compatible with Opal, Armadillo and DSLite environments
-
 ## Example
 
 This is a basic example which shows you how to solve a common problem:
@@ -83,29 +28,26 @@ library(dsGeospatial)
 ## basic example code
 ```
 
-## Privacy and disclosure protection
+What is special about using `README.Rmd` instead of just `README.md`?
+You can include R chunks like so:
 
-All analyses are performed within the DataSHIELD framework.
+``` r
+summary(cars)
+#>      speed           dist       
+#>  Min.   : 4.0   Min.   :  2.00  
+#>  1st Qu.:12.0   1st Qu.: 26.00  
+#>  Median :15.0   Median : 36.00  
+#>  Mean   :15.4   Mean   : 42.98  
+#>  3rd Qu.:19.0   3rd Qu.: 56.00  
+#>  Max.   :25.0   Max.   :120.00
+```
 
-No individual-level health or environmental records leave the secure
-data repositories. Results returned to the analyst consist only of
-disclosure-controlled aggregated outputs that comply with DataSHIELD
-disclosure rules.
+You’ll still need to render `README.Rmd` regularly, to keep `README.md`
+up-to-date. `devtools::build_readme()` is handy for this.
 
-## Development status
+You can also embed plots, for example:
 
-**dsGeospatial** is currently under active development.
+<img src="man/figures/README-pressure-1.png" alt="" width="100%" />
 
-Planned future capabilities include: * * \*
-
-## Contributing
-
-Contributions, feature requests and bug reports are welcome.
-
-Please see .github/:
-
-- `CONTRIBUTING.md`
-- `ISSUE_template.md`
-- `DISCLOSUREissue_template.md`
-
-for information on contributing to the project.
+In that case, don’t forget to commit and push the resulting figure
+files, so they display on GitHub and CRAN.

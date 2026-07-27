@@ -1,122 +1,46 @@
----
-title: "geospatialdev_1.2"
-output: github_document
-date: "2026-07-03"
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+geospatialdev_1.2
+================
+2026-07-03
 
 ## Function summary
 
-Plots heatmap for lsoa level aggregate of selected variables on map. Uses modified ds.meanSdGp and MeanSdGpDS functions for lsoa level aggrgation. Default map setting from boundr package, future version accepts shapefile readable with st_read. Plotting done with library sf and ggplot2.
+Plots heatmap for lsoa level aggregate of selected variables on map.
+Uses modified ds.meanSdGp and MeanSdGpDS functions for lsoa level
+aggrgation. Default map setting from boundr package, future version
+accepts shapefile readable with st_read. Plotting done with library sf
+and ggplot2.
 
-Current testing done on synthetic health outcome data created by RVD. 
-
-```{r, include=FALSE}
-
-# retrieve LSOA boundaries for Cheshire and Merseyside
-# to reduce coverage, remove names from the `within_names`
-
-cm_lsoa_sf <- boundr::bounds(
-  "lsoa",
-  within_level = "lad",
-  within_names = c(
-    "Cheshire East",
-    "Cheshire West and Chester",
-    "Halton",
-    "Knowsley",
-    "Liverpool",
-    "Sefton",
-    "St. Helens",
-    "Warrington",
-    "Wirral"
-  ),
-  lookup_year = 2011, # can be either 2011 or 2021
-  opts = boundr::boundr_options(resolution = "BFC")
-)
-
-liverpool_sf <- cm_lsoa_sf |>
-  dplyr::filter(lad22nm %in% "Liverpool")
-
-uprn_gs_sf <- "https://pldr.org/download/2k6r3/n12/UPRN_2_1_greenspace_distances_with_coords.csv" |>
-  readr::read_csv() |>
-  # convert to spatial object
-  sf::st_as_sf(coords = c("longitude", "latitude"), crs = 4326) |>
-  # add LSOA details
-  sf::st_join(cm_lsoa_sf)
-
-
-
-qof_asthma_tbl <- "https://pldr.org/download/e6nzv/ng1/QOF_4_03_Asthma_LSOA.csv" |>
-  readr::read_csv() |>
-  # filter out CM LSOAs
-  dplyr::filter(lsoa11 %in% cm_lsoa_sf$lsoa11cd) |>
-  # filter out last year
-  dplyr::filter(year == 2024)
-
-
-
-# set seed for reproducibility
-set.seed(20250603)
-qof_asthma_cohort_tbl <- qof_asthma_tbl |>
-  purrr::pmap(function(lsoa11, den, num, ...) {
-    # recalculate pop to be a multiple of 2
-    pop <- ifelse(den %% 2 != 0, den + 1, den)
-    # extract UPRNs for this LSOA
-    uprn_tbl <- uprn_gs_sf |>
-      sf::st_drop_geometry() |>
-      dplyr::filter(lsoa11cd == lsoa11) |>
-      dplyr::mutate(
-        dist_gs_dec = dplyr::ntile(distance_local_greenspace, 10)
-      ) |>
-      dplyr::arrange(dist_gs_dec)
-    
-    # create cohort table
-    cohort_tbl <- tibble::tibble(
-      lsoa11cd = lsoa11,
-      sex = rep(c(0, 1), each = pop / 2),
-      has_asthma = FALSE,
-      uprn = sample(uprn_tbl$UPRN, size = pop, replace = TRUE)
-    )
-    
-    # randomly assigned the outcome to `num` patients
-    idx <- sample(seq_len(pop), ceiling(num), replace = FALSE)
-    cohort_tbl$has_asthma[idx] <- TRUE
-    
-    # randomly re-assigned UPRNs with higher distances to patients with outcome
-    ## create vector of probabilities, so further distances are favoured
-    p <- c(0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.1, 0.2, 0.2, 0.2)
-    idx_uprn_tile <- sample(1:10, ceiling(num), replace = TRUE, prob = p)
-    ## subset UPRNs with match tile as per `idx_uprn_tile`
-    cohort_tbl$uprn[idx] <- purrr::map(idx_uprn_tile, function(x) {
-      # subset based on tile decile  
-      aux <- dplyr::filter(uprn_tbl, dist_gs_dec == x)
-      # extract UPRN
-      aux$UPRN[sample(seq_len(nrow(aux)), 1)]
-    }) |>
-      purrr::list_c()
-    
-    # return final cohort table
-    return(cohort_tbl)
-  }) |>
-  purrr::list_c()
-
-
-qof_asthma_cohort_dist_gs_sf <- qof_asthma_cohort_tbl |>
-  dplyr::left_join(uprn_gs_sf, by = c("uprn" = "UPRN", "lsoa11cd")) |>
-  dplyr::arrange(lsoa11cd, uprn) |>
-  sf::st_as_sf()
-```
+Current testing done on synthetic health outcome data created by RVD.
 
 ## Upload data and load back with DSLite.
 
-```{r}
-
+``` r
 library(DSLite)
+```
+
+    ## Loading required package: DSI
+
+    ## Loading required package: progress
+
+    ## Loading required package: R6
+
+    ## Loading required package: rly
+
+``` r
 library(devtools)
+```
+
+    ## Loading required package: usethis
+
+``` r
 library(dsBase)
+```
+
+    ## Registered S3 method overwritten by 'gamlss':
+    ##   method   from
+    ##   print.ri bit
+
+``` r
 library(dsBaseClient)
 library(dsGeospatial)
 
@@ -125,6 +49,11 @@ dat <- qof_asthma_cohort_dist_gs_sf |>
   sf::st_drop_geometry()
 
 devtools::load_all("/Users/tkariya/Documents/DataSHIELD/dsExample")
+```
+
+    ## ℹ Loading dsExample
+
+``` r
 #devtools::load_all("/Users/tkariya/Documents/DataSHIELD/dsExampleClient")
 
 
@@ -184,24 +113,27 @@ logindata <- builder$build()
 
 
 conns <- DSI::datashield.login(logins = logindata, assign = FALSE)
-
-datashield.assign.table(conns, "D", logindata)
-
 ```
 
+    ## 
+    ## Logging into the collaborating servers
 
-Set nfilter.tab 
+``` r
+datashield.assign.table(conns, "D", logindata)
+```
 
-```{r}
+Set nfilter.tab
+
+``` r
 nfilter.tab  <- 3
 ```
 
 ## Modified meanSDGPDS
 
-modification: Convert object to numeric first and then find mean and var.
+modification: Convert object to numeric first and then find mean and
+var.
 
-```{r, eval=FALSE}
-
+``` r
 ## Server side function
 
 MeanSdGpDS <- function (X, INDEX){
@@ -311,17 +243,15 @@ MeanSdGpDS <- function (X, INDEX){
   }
   
 }
-
 ```
 
 ## geoheatmap function
 
-Inputs : inputs of ds.meanSdGp and shapefile and names_region (when using boundr)
-Return : mean plot of selected variable. mean can be 'split' or 'combined' across studies.
+Inputs : inputs of ds.meanSdGp and shapefile and names_region (when
+using boundr) Return : mean plot of selected variable. mean can be
+‘split’ or ‘combined’ across studies.
 
-
-```{r, eval=FALSE}
-
+``` r
 ## Client-side function
 #'
 #' @title Plot a geographic heatmap
@@ -619,31 +549,40 @@ ds.geoheatmapPlot <- function(x = NULL, y = NULL, type = 'combine',
     ggplot2::theme_minimal()
   
 }
-
-
-
-
 ```
-
-
 
 ## Outputs
-```{r}
+
+``` r
 ds.geoheatmapPlot(x="D$has_asthma", y = "D$lsoa11cd", datasources = conns)
-ds.geoheatmapPlot(x="D$has_asthma", y = "D$lsoa11cd", datasources = conns, 
-                  type='split')
-ds.geoheatmapPlot(x="D$has_asthma", y = "D$lsoa11cd", datasources = conns,
-                  type='split', names_region = c("Liverpool", "Sefton"))
-
-
-ds.geoheatmapPlot(x="D$distance_local_greenspace", y = "D$lsoa11cd", 
-                  datasources = conns)
-ds.geoheatmapPlot(x="D$has_asthma", y = "D$lsoa11cd", datasources = conns,
-                  type = 'split', names_region = c("Liverpool", "Sefton"))
-
-
 ```
 
+![](geospatial_dev_1.2_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
+``` r
+ds.geoheatmapPlot(x="D$has_asthma", y = "D$lsoa11cd", datasources = conns, 
+                  type='split')
+```
 
+![](geospatial_dev_1.2_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
 
+``` r
+ds.geoheatmapPlot(x="D$has_asthma", y = "D$lsoa11cd", datasources = conns,
+                  type='split', names_region = c("Liverpool", "Sefton"))
+```
+
+![](geospatial_dev_1.2_files/figure-gfm/unnamed-chunk-6-3.png)<!-- -->
+
+``` r
+ds.geoheatmapPlot(x="D$distance_local_greenspace", y = "D$lsoa11cd", 
+                  datasources = conns)
+```
+
+![](geospatial_dev_1.2_files/figure-gfm/unnamed-chunk-6-4.png)<!-- -->
+
+``` r
+ds.geoheatmapPlot(x="D$has_asthma", y = "D$lsoa11cd", datasources = conns,
+                  type = 'split', names_region = c("Liverpool", "Sefton"))
+```
+
+![](geospatial_dev_1.2_files/figure-gfm/unnamed-chunk-6-5.png)<!-- -->
