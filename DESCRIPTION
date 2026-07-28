@@ -11,6 +11,9 @@ Description: Provides privacy-preserving methods for the visualisation and
     being developed as part of the GROVE project within the DARE UK programme.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
+Depends:R (>= 4.0.0)
+Imports:
+Suggests:
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
