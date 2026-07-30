@@ -3,7 +3,7 @@
 
 # dsGeospatial : 
 
-** Server-side package for privacy-preserving geospatial visualisation and analysis for health
+**Server-side package for privacy-preserving geospatial visualisation and analysis for health
 and environmental data in DataSHIELD**
 
 ## Installation
