@@ -1,0 +1,16 @@
+services:
+  rock-geospatial:
+    image: ds-geospatial-rock:0.0.0.9000
+    platform: linux/amd64
+    environment:
+      ROCK_ID: ds-geospatial-rock-01
+      ROCK_CLUSTER: ds-geospatial
+
+  rock-default:
+    image: ds-geospatial-rock:0.0.0.9000
+    platform: linux/amd64
+    environment:
+      ROCK_ID: ds-geospatial-rock-01
+      ROCK_CLUSTER: default
+    ports:
+      - "8085:8085"

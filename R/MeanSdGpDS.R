@@ -35,9 +35,21 @@
 #' @keywords internal
 #' @export
 MeanSdGpDS <- function (X, INDEX){
+  
+  
+  #############################################################
+  # MODULE 1: CAPTURE THE nfilter SETTINGS
+  thr <- dsBase::listDisclosureSettingsDS()
+  nfilter.tab <- as.numeric(thr$nfilter.tab)
+  #nfilter.glm <- as.numeric(thr$nfilter.glm)
+  #nfilter.subset <- as.numeric(thr$nfilter.subset)
+  #nfilter.string <- as.numeric(thr$nfilter.string)
+  #############################################################
 
   FUN.mean <- function(x) {mean(as.numeric(x),na.rm=TRUE)} # changed lines
   FUN.var <- function(x)  {stats::var(as.numeric(x),na.rm=TRUE)} # changed lines
+  FUN.max <- function(x) {max(as.numeric(x),na.rm=TRUE)} # changed lines
+  FUN.min <- function(x) {min(as.numeric(x),na.rm=TRUE)} # changed lines
 
   analysis.matrix <- data.frame(X,INDEX) # changed lines
 
@@ -97,7 +109,7 @@ MeanSdGpDS <- function (X, INDEX){
     ansmat[index] <- ans
   }
   ansmat.mean<-ansmat
-
+  
   #CALCULATE GROUP SDs
   ans <- lapply(X = split(X, group), FUN = FUN.var)
   index <- as.integer(names(ans))
@@ -114,7 +126,41 @@ MeanSdGpDS <- function (X, INDEX){
     ansmat[index] <- ans
   }
   ansmat.sd<-sqrt(ansmat)
-
+  
+  # #CALCULATE GROUP MAX
+  # ans <- lapply(X = split(X, group), FUN = FUN.max)
+  # index <- as.integer(names(ans))
+  # if (simplify && all(unlist(lapply(ans, length)) == 1L)) {
+  #   ansmat <- array(dim = extent, dimnames = namelist)
+  #   ans <- unlist(ans, recursive = FALSE)
+  # }
+  # else {
+  #   ansmat <- array(vector("list", prod(extent)), dim = extent,
+  #                   dimnames = namelist)
+  # }
+  # if (length(index)) {
+  #   names(ans) <- NULL
+  #   ansmat[index] <- ans
+  # }
+  # ansmat.max<-ansmat
+  # 
+  # #CALCULATE GROUP MIN
+  # ans <- lapply(X = split(X, group), FUN = FUN.min)
+  # index <- as.integer(names(ans))
+  # if (simplify && all(unlist(lapply(ans, length)) == 1L)) {
+  #   ansmat <- array(dim = extent, dimnames = namelist)
+  #   ans <- unlist(ans, recursive = FALSE)
+  # }
+  # else {
+  #   ansmat <- array(vector("list", prod(extent)), dim = extent,
+  #                   dimnames = namelist)
+  # }
+  # if (length(index)) {
+  #   names(ans) <- NULL
+  #   ansmat[index] <- ans
+  # }
+  # ansmat.min<-ansmat
+  # 
 
   #CALCULATE GROUP SIZES AND CHECK VALID
 
