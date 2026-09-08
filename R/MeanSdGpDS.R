@@ -48,8 +48,9 @@ MeanSdGpDS <- function (X, INDEX){
 
   FUN.mean <- function(x) {mean(as.numeric(x),na.rm=TRUE)} # changed lines
   FUN.var <- function(x)  {stats::var(as.numeric(x),na.rm=TRUE)} # changed lines
-  FUN.max <- function(x) {max(as.numeric(x),na.rm=TRUE)} # changed lines
-  FUN.min <- function(x) {min(as.numeric(x),na.rm=TRUE)} # changed lines
+  FUN.qq <- function(x)  {stats::quantile(as.numeric(x), 
+                                          c(0.05,0.1,0.25,0.5,0.75,0.9,0.95), 
+                                          na.rm=TRUE)}
 
   analysis.matrix <- data.frame(X,INDEX) # changed lines
 
@@ -89,8 +90,7 @@ MeanSdGpDS <- function (X, INDEX){
     group <- group + ngroup * (as.integer(index) - one)
     ngroup <- ngroup * nlevels(index)
   }
-  #    if (is.null(FUN.mean))
-  #        return(group)
+  
 
 
   #CALCULATE GROUP MEANS
@@ -127,40 +127,24 @@ MeanSdGpDS <- function (X, INDEX){
   }
   ansmat.sd<-sqrt(ansmat)
   
-  # #CALCULATE GROUP MAX
-  # ans <- lapply(X = split(X, group), FUN = FUN.max)
-  # index <- as.integer(names(ans))
-  # if (simplify && all(unlist(lapply(ans, length)) == 1L)) {
-  #   ansmat <- array(dim = extent, dimnames = namelist)
-  #   ans <- unlist(ans, recursive = FALSE)
-  # }
-  # else {
-  #   ansmat <- array(vector("list", prod(extent)), dim = extent,
-  #                   dimnames = namelist)
-  # }
-  # if (length(index)) {
-  #   names(ans) <- NULL
-  #   ansmat[index] <- ans
-  # }
-  # ansmat.max<-ansmat
-  # 
-  # #CALCULATE GROUP MIN
-  # ans <- lapply(X = split(X, group), FUN = FUN.min)
-  # index <- as.integer(names(ans))
-  # if (simplify && all(unlist(lapply(ans, length)) == 1L)) {
-  #   ansmat <- array(dim = extent, dimnames = namelist)
-  #   ans <- unlist(ans, recursive = FALSE)
-  # }
-  # else {
-  #   ansmat <- array(vector("list", prod(extent)), dim = extent,
-  #                   dimnames = namelist)
-  # }
-  # if (length(index)) {
-  #   names(ans) <- NULL
-  #   ansmat[index] <- ans
-  # }
-  # ansmat.min<-ansmat
-  # 
+ 
+  #CALCULATE GROUP QUANTILES
+  
+  ans <- lapply(X = split(X, group), FUN = FUN.qq)
+  index <- as.integer(names(ans))
+  if (simplify && all(unlist(lapply(ans, length)) == 1L)) {
+    ansmat <- array(dim = extent, dimnames = namelist)
+    ans <- unlist(ans, recursive = FALSE)
+  }
+  else {
+    ansmat <- array(vector("list", prod(extent)), dim = extent,
+                    dimnames = namelist)
+  }
+  if (length(index)) {
+    names(ans) <- NULL
+    ansmat[index] <- ans
+  }
+  ansmat.qq<-ansmat
 
   #CALCULATE GROUP SIZES AND CHECK VALID
 
@@ -174,8 +158,8 @@ MeanSdGpDS <- function (X, INDEX){
   {
     table.valid<-TRUE
     cell.count.warning<-paste0("All tables valid")
-    result<-list(table.valid,ansmat.mean,ansmat.sd,ansmat.count,Nvalid,Nmissing,Ntotal,cell.count.warning)
-    names(result)<-list("Table_valid","Mean_gp","StDev_gp", "N_gp","Nvalid","Nmissing","Ntotal","Message")
+    result<-list(table.valid,ansmat.mean,ansmat.sd,ansmat.qq, ansmat.count,Nvalid,Nmissing,Ntotal,cell.count.warning)
+    names(result)<-list("Table_valid","Mean_gp","StDev_gp", "Q_gp","N_gp","Nvalid","Nmissing","Ntotal","Message")
     return(result)
   }
 
