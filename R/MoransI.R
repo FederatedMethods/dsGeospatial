@@ -60,15 +60,8 @@
 #' If the analysis is permitted, the list contains:
 #'
 #' \describe{
-#'   \item{Table_valid}{TRUE.}
-#'   \item{Nvalid}{Number of finite observations.}
-#'   \item{Nmissing}{Number of missing or non-finite observations.}
-#'   \item{Ntotal}{Total number of spatial units.}
 #'   \item{moran_I}{Observed Global Moran's I statistic.}
-#'   \item{expectation}{Expected Moran's I under the null hypothesis.}
-#'   \item{variance}{Variance of Moran's I under the analytical test.}
 #'   \item{z}{Standardised Moran's I test statistic.}
-#'   \item{p_analytic}{Analytical p-value from `spdep::moran.test()`.}
 #'   \item{p_mc}{Monte Carlo permutation p-value from `spdep::moran.mc()`.}
 #' }
 #'
@@ -80,61 +73,54 @@
 MoransI <- function (X, LISTW, nsim) {
   #############################################################
   # MODULE 1: CAPTURE THE nfilter SETTINGS
-  #thr <- dsBase::listDisclosureSettingsDS()
+  thr <- dsBase::listDisclosureSettingsDS()
   nfilter.tab <- as.numeric(thr$nfilter.tab)
   #nfilter.glm <- as.numeric(thr$nfilter.glm)
   #nfilter.subset <- as.numeric(thr$nfilter.subset)
   #nfilter.string <- as.numeric(thr$nfilter.string)
   #############################################################
   
-  results <- list()
   
-  for (v in 1:length(X)) {
-    res.table <- data.frame()
-    for (w in names(listw)) {
-      x <- X[[v]]
-      x.length <- sum(is.finite(x))
-      x.na <- sum(!is.finite(x))
-      x.total <- length(x)
-
-      if (x.length < nfilter.tab) {
-        table.valid <- FALSE
-        cell.count.warning <- paste0("Number of cells is less than ", nfilter.tab, ".")
-        result <- list(table.valid,
-                       X.length,
-                       X.na,
-                       X.total,
-                       cell.count.warning)
-        names(result) <- list("Table_valid",
-                              "Nvalid",
-                              "Nmissing",
-                              "Ntotal",
-                              "Warning")
-        return(result)
-      } else{
-        mt <- spdep::moran.test(x,
-                                listw[[w]],
-                                zero.policy = TRUE,
-                                na.action = na.omit)
-        mc <- spdep::moran.mc(
-          x,
-          listw[[w]],
-          nsim = nsim,
-          zero.policy = TRUE,
-          na.action = na.omit
-        )
-    
-        res <- data.table(
-          variable <- v,
-          weights <- w,
-          moran_I = unname(mt$estimate[1]),
-          z = unname(mt$statistic),
-          p_mc = mc$p.value
-        )
-        res.table <- rbind(res.table, res)
-      }
-    }
-    results[[v]] <- res.table
-  }
-  return(results)
+  x.length <- sum(is.finite(X))
+  x.na <- sum(!is.finite(X))
+  x.total <- length(X)
+  
+  if (x.length < nfilter.tab) {
+    table.valid <- FALSE
+    cell.count.warning <- paste0("Number of cells is less than ", nfilter.tab, ".")
+    result <- list(table.valid,
+                   x.length,
+                   x.na,
+                   x.total,
+                   cell.count.warning)
+    names(result) <- list("Table_valid",
+                          "Nvalid",
+                          "Nmissing",
+                          "Ntotal",
+                          "Warning")
+    return(result)
+  } 
+  else{
+  mt <- spdep::moran.test(X,
+                          LISTW,
+                          zero.policy = TRUE,
+                          na.action = na.omit)
+  mc <- spdep::moran.mc(
+    X,
+    LISTW,
+    nsim = nsim,
+    zero.policy = TRUE,
+    na.action = na.omit
+  )
+  
+  res <- list(
+    moran_I = unname(mt$estimate[1]),
+    z = unname(mt$statistic),
+    p_mc = mc$p.value
+  )
+  
+  return(res)
+  
+}
+  
 }
