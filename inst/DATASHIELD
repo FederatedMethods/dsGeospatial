@@ -2,4 +2,5 @@ AggregateMethods:
     MeanSdGpDS,
     groupcorDS,
     asFactorDS3,
-    MoransI
+    MoransI,
+    Localmoran
