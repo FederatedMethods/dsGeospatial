@@ -9,10 +9,9 @@ Description: Provides privacy-preserving methods for the visualisation and
     remain within the data-holding organisations, while only disclosure-
     controlled aggregate results are returned to the analyst. The package is
     being developed as part of the GROVE project within the DARE UK programme.
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
-Depends:R (>= 4.0.0)
-Imports:spdep
+License: MIT + file LICENSE
+Depends: R (>= 4.0.0)
+Imports: spdep
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0
