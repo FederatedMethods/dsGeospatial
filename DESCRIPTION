@@ -11,7 +11,7 @@ Description: Provides privacy-preserving methods for the visualisation and
     being developed as part of the GROVE project within the DARE UK programme.
 License: MIT + file LICENSE
 Depends: R (>= 4.0.0)
-Imports: spdep
+Imports: spdep, spatialreg
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 8.0.0

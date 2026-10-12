@@ -3,4 +3,5 @@ AggregateMethods:
     groupcorDS,
     asFactorDS3,
     MoransI,
-    Localmoran
+    Localmoran,
+    lagsarlmDS
