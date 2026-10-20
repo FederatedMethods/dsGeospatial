@@ -5,4 +5,6 @@ AggregateMethods:
     MoransI,
     Localmoran,
     lagsarlmDS,
-    lmSLXDS
+    lmSLXDS,
+    gwrbasicDS,
+    conleyregDS

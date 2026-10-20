@@ -24,6 +24,14 @@ RUN R -e "install.packages('spdep', repos='https://cloud.r-project.org'); stopif
 # Install spatialreg
 RUN R -e "install.packages('spatialreg', repos='https://cloud.r-project.org')"
 
+# Install GWmodel
+RUN R -e "install.packages('GWmodel', repos='https://cloud.r-project.org')"
+
+# Install conleyreg
+RUN R -e "install.packages('conleyreg', repos='https://cloud.r-project.org')"
+
+
+
 COPY dsGeospatial_0.0.0.9000.tar.gz /tmp/
 
 RUN R CMD INSTALL /tmp/dsGeospatial_0.0.0.9000.tar.gz
