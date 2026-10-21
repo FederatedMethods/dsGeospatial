@@ -30,6 +30,8 @@ RUN R -e "install.packages('GWmodel', repos='https://cloud.r-project.org')"
 # Install conleyreg
 RUN R -e "install.packages('conleyreg', repos='https://cloud.r-project.org')"
 
+# Install spmodel
+RUN R -e "install.packages('spmodel', repos='https://cloud.r-project.org')"
 
 
 COPY dsGeospatial_0.0.0.9000.tar.gz /tmp/

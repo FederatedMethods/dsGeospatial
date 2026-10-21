@@ -7,4 +7,5 @@ AggregateMethods:
     lagsarlmDS,
     lmSLXDS,
     gwrbasicDS,
-    conleyregDS
+    conleyregDS,
+    splmDS 
