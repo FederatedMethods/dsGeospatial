@@ -4,7 +4,7 @@
 \alias{splmDS}
 \title{Spatial Linear Regression with Disclosure Controls}
 \usage{
-splmDS(formula, data, dist_cutoff)
+splmDS(formula, data)
 }
 \arguments{
 \item{formula}{An R formula specifying the dependent variable
