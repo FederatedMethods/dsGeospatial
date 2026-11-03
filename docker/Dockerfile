@@ -36,8 +36,14 @@ RUN R -e "install.packages('spmodel', repos='https://cloud.r-project.org')"
 # Install spmoran
 RUN R -e "install.packages('spmoran', repos='https://cloud.r-project.org')"
 
-# Install resourcer
-RUN R -e "install.packages('resourcer', repos='https://cloud.r-project.org')"
+# Install an older INLA version
+RUN R -e "install.packages( \
+  'https://inla.r-inla-download.org/R/stable/src/contrib/INLA_24.05.10.tar.gz', \
+  repos = NULL, \
+  type = 'source' \
+)"
+# Install fmesher (INLA dependency)
+RUN R -e "install.packages('fmesher', repos='https://cloud.r-project.org')"
 
 COPY dsGeospatial_0.0.0.9000.tar.gz /tmp/
 
