@@ -1,7 +1,4 @@
-# correlation matrix
-
-#' DSLite config
-#'#' Calculate grouped correlation summary statistics
+#' Calculate grouped correlation summary statistics
 #'
 #' Server-side aggregate function that computes the summary statistics required
 #' to construct covariance and correlation matrices within each level of one or
@@ -32,7 +29,7 @@
 #' }
 #' In addition, the returned list contains:
 #' \describe{
-#'   \item{Nfilter.tab}{The disclosure threshold used for grouped tables.}
+#'   \item{nfilter.tab}{The disclosure threshold used for grouped tables.}
 #' }
 #'
 #' If disclosure checks fail, a reduced list is returned containing:
