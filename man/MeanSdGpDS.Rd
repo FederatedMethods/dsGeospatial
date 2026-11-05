@@ -2,42 +2,89 @@
 % Please edit documentation in R/MeanSdGpDS.R
 \name{MeanSdGpDS}
 \alias{MeanSdGpDS}
-\title{Calculate grouped summary statistics}
+\title{Calculate Grouped Summary Statistics on the DataSHIELD Server}
 \usage{
 MeanSdGpDS(X, INDEX)
 }
 \arguments{
-\item{X}{A numeric vector.}
+\item{X}{A numerical vector containing the variable for which
+grouped summary statistics are calculated. Values are coerced
+to numeric during calculation.}
 
-\item{INDEX}{A factor, character, or list of grouping variables of the same
-length as \code{X}.}
+\item{INDEX}{A grouping variable or a data frame containing
+multiple grouping variables. Each grouping variable is converted
+to a factor. When multiple variables are supplied, groups are
+defined by combinations of their factor levels.}
 }
 \value{
-A named list.
-If all groups satisfy the disclosure threshold, the returned list contains:
+A named list whose contents depend on whether the
+disclosure-control check is satisfied.
+
+If all group counts are valid, the returned list contains:
 \describe{
-\item{Table_valid}{Logical indicating whether all groups passed disclosure checks.}
-\item{Mean_gp}{Array of group means.}
-\item{StDev_gp}{Array of group standard deviations.}
-\item{N_gp}{Table of group sample sizes.}
-\item{Nvalid}{Number of complete observations used in the analysis.}
-\item{Nmissing}{Number of observations removed due to missing values.}
-\item{Ntotal}{Total number of observations supplied.}
-\item{Message}{Disclosure status message.}
+\item{Table_valid}{Logical value \code{TRUE}, indicating that
+all non-empty groups satisfy the disclosure threshold.}
+\item{Mean_gp}{Array containing the mean for each group.}
+\item{StDev_gp}{Array containing the standard deviation
+for each group.}
+\item{Q_gp}{Array or list-array containing the seven quantiles
+for each group.}
+\item{N_gp}{Frequency table containing group counts.}
+\item{Nvalid}{Total number of complete observations.}
+\item{Nmissing}{Total number of observations with missing values
+in X or INDEX.}
+\item{Ntotal}{Total number of input observations.}
+\item{Message}{Character string indicating that all tables
+passed disclosure-control checks.}
 }
 
-If one or more groups fail the disclosure threshold, only the validity flag,
-observation counts and warning message are returned.
+If at least one non-empty group fails the disclosure-control
+check, the returned list contains:
+\describe{
+\item{Table_valid}{Logical value \code{FALSE}.}
+\item{Nvalid}{Total number of complete observations.}
+\item{Nmissing}{Total number of incomplete observations.}
+\item{Ntotal}{Total number of input observations.}
+\item{Warning}{Character string describing the disclosure-control
+violation and requesting regrouping.}
+}
 }
 \description{
-Server-side aggregate function that computes the mean, standard deviation,
-and sample size of a numeric variable grouped by one or more categorical
-variables. Missing observations are removed prior to analysis and DataSHIELD
-disclosure controls are applied to ensure that group sizes satisfy the
-configured minimum cell count threshold (\code{nfilter.tab}).
+Computes summary statistics for a numerical variable grouped by one
+or more categorical variables on the DataSHIELD server. The function
+calculates group means, standard deviations, quantiles and sample
+sizes while enforcing DataSHIELD disclosure-control thresholds.
 }
 \details{
-This function is intended for server-side execution within the DataSHIELD
-framework and should not normally be called directly by end users.
+This server-side function is designed to be called by the client-side
+function \code{ds.summarystat()} through a DataSHIELD aggregate request.
+
+The function first removes observations with missing values in either
+the numerical variable or any grouping variable. It then calculates
+the following statistics for each group:
+
+\itemize{
+\item Arithmetic mean.
+\item Standard deviation (SD).
+\item Quantiles at 5\%, 10\%, 25\%, 50\%, 75\%, 90\% and 95\%.
+\item Number of observations.
 }
-\keyword{internal}
+
+When multiple grouping variables are supplied, statistics are
+calculated for each combination of their factor levels.
+
+Before returning group-level statistics, the function checks
+disclosure-control settings using
+\code{dsBase::listDisclosureSettingsDS()}. The minimum permitted
+cell size is determined by \code{nfilter.tab}.
+
+If any non-empty group contains fewer observations than
+\code{nfilter.tab}, the function suppresses all group-level
+statistics and returns a warning message instead.
+
+If all non-empty groups satisfy the disclosure-control threshold,
+the calculated summary statistics are returned to the client.
+}
+\seealso{
+\code{\link{ds.summarystat}}
+}
