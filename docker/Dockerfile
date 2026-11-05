@@ -29,6 +29,7 @@ RUN apt-get update && apt-get install -y \
     libproj-dev \
     git \
     && rm -rf /var/lib/apt/lists/*
+    
 
 # units requires Rcpp >= 1.1.0
 RUN R -e "install.packages('Rcpp', repos='https://cloud.r-project.org'); stopifnot(packageVersion('Rcpp') >= '1.1.0')"
@@ -39,8 +40,31 @@ RUN R -e "install.packages('units', repos='https://cloud.r-project.org'); stopif
 # Install spdep
 RUN R -e "install.packages('spdep', repos='https://cloud.r-project.org'); stopifnot(requireNamespace('spdep', quietly=TRUE))"
 
-# Install remotes (used to install from GitHub)
-RUN R -e "install.packages('remotes', repos='https://cloud.r-project.org'); stopifnot(requireNamespace('remotes', quietly=TRUE))"
+# Install spatialreg
+RUN R -e "install.packages('spatialreg', repos='https://cloud.r-project.org')"
+
+# Install GWmodel
+RUN R -e "install.packages('GWmodel', repos='https://cloud.r-project.org')"
+
+# Install conleyreg
+RUN R -e "install.packages('conleyreg', repos='https://cloud.r-project.org')"
+
+# Install spmodel
+RUN R -e "install.packages('spmodel', repos='https://cloud.r-project.org')"
+
+# Install spmoran
+RUN R -e "install.packages('spmoran', repos='https://cloud.r-project.org')"
+
+# Install an older INLA version
+RUN R -e "install.packages( \
+  'https://inla.r-inla-download.org/R/stable/src/contrib/INLA_24.05.10.tar.gz', \
+  repos = NULL, \
+  type = 'source' \
+)"
+# Install fmesher (INLA dependency)
+RUN R -e "install.packages('fmesher', repos='https://cloud.r-project.org')"
+
+COPY dsGeospatial_0.0.0.9000.tar.gz /tmp/
 
 # Install {dsGeospatial} from GitHub at the requested branch/tag/commit.
 # CACHEBUST is echoed so that changing it invalidates this layer.
