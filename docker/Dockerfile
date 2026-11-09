@@ -61,8 +61,6 @@ RUN R -e "install.packages( \
   repos = NULL, \
   type = 'source' \
 )"
-# Install fmesher (INLA dependency)
-RUN R -e "install.packages('fmesher', repos='https://cloud.r-project.org')"
 
 COPY dsGeospatial_0.0.0.9000.tar.gz /tmp/
 
