@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y \
     libproj-dev \
     git \
     && rm -rf /var/lib/apt/lists/*
-    
+
 
 # units requires Rcpp >= 1.1.0
 RUN R -e "install.packages('Rcpp', repos='https://cloud.r-project.org'); stopifnot(packageVersion('Rcpp') >= '1.1.0')"
@@ -54,15 +54,6 @@ RUN R -e "install.packages('spmodel', repos='https://cloud.r-project.org')"
 
 # Install spmoran
 RUN R -e "install.packages('spmoran', repos='https://cloud.r-project.org')"
-
-# Install an older INLA version
-RUN R -e "install.packages( \
-  'https://inla.r-inla-download.org/R/stable/src/contrib/INLA_24.05.10.tar.gz', \
-  repos = NULL, \
-  type = 'source' \
-)"
-
-COPY dsGeospatial_0.0.0.9000.tar.gz /tmp/
 
 # Install {dsGeospatial} from GitHub at the requested branch/tag/commit.
 # CACHEBUST is echoed so that changing it invalidates this layer.
