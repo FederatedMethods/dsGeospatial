@@ -10,5 +10,5 @@ AggregateMethods:
     conleyregDS,
     splmDS,
     weigenDS,
-    inlaDS,
     plotSpatialDS
+    

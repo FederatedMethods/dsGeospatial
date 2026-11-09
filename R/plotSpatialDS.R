@@ -99,7 +99,7 @@ plotSpatialDS <- function(
   if (!"matrix_row_id" %in% names(study)) {
     study <- merge(
       study,
-      mapping[, .(cell_id, matrix_row_id)],
+      mapping[, c("cell_id", "matrix_row_id"), drop = FALSE],
       by = "cell_id"
     )
   }
@@ -107,7 +107,7 @@ plotSpatialDS <- function(
   # Add map coordinates
   study <- merge(
     study,
-    pos[, .(matrix_row_id, x, y)],
+    pos[, c("matrix_row_id", "x", "y"), drop = FALSE],
     by = "matrix_row_id"
   )
   

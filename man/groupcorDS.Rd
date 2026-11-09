@@ -2,8 +2,7 @@
 % Please edit documentation in R/groupcorDS.R
 \name{groupcorDS}
 \alias{groupcorDS}
-\title{DSLite config
-#' Calculate grouped correlation summary statistics}
+\title{Calculate grouped correlation summary statistics}
 \usage{
 groupcorDS(X, Y, INDEX)
 }
@@ -27,7 +26,7 @@ per group. Each group contains:
 }
 In addition, the returned list contains:
 \describe{
-\item{Nfilter.tab}{The disclosure threshold used for grouped tables.}
+\item{nfilter.tab}{The disclosure threshold used for grouped tables.}
 }
 
 If disclosure checks fail, a reduced list is returned containing:
