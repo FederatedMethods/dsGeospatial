@@ -1,8 +1,8 @@
 # ---------------------------------------------------------------------------
 # GLOBAL VARIABLES
 # Override at build time, e.g.:
-#   docker build --build-arg DSGEOSPATIAL_REF=dev-MoransI -t ds-geospatial-rock:dev-MoransI .
-#   docker build --build-arg DSGEOSPATIAL_REF=93de9cd     -t ds-geospatial-rock:93de9cd .
+#   docker build --build-arg DSGEOSPATIAL_REF=dev-MoransI -t rock-grove:dev-MoransI .
+#   docker build --build-arg DSGEOSPATIAL_REF=93de9cd     -t rock-grove:93de9cd .
 # ---------------------------------------------------------------------------
 ARG ROCK_BASE_IMAGE=datashield/rock-base:6.3.0-R4.4.0
 ARG DSGEOSPATIAL_REPO=FederatedMethods/dsGeospatial
