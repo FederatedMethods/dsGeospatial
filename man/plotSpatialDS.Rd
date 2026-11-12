@@ -4,16 +4,7 @@
 \alias{plotSpatialDS}
 \title{Prepare Spatial Data for Case and Negative Mapping}
 \usage{
-plotSpatialDS(
-  D,
-  study,
-  mapping,
-  pos,
-  basemap,
-  area = "east",
-  case_var = "case",
-  k = 5
-)
+plotSpatialDS(D, study, mapping, pos, basemap, area, case_var, k = 5)
 }
 \arguments{
 \item{D}{A square network distance matrix, potentially sparse,

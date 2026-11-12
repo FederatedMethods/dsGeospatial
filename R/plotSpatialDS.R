@@ -88,8 +88,8 @@ plotSpatialDS <- function(
     mapping,
     pos,
     basemap,
-    area = "east",
-    case_var = "case",
+    area,
+    case_var,
     k = 5
 ) {
   
